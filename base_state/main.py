@@ -9,6 +9,13 @@ api = Api(app)
 
 state = {"data" : "hello world"}
 
+def error_key_not_found(key):
+    return {"status":"error", "error":"key "+key+" not found"}
+
+
+def error_key_already_exists(key):
+    return {"status":"error", "error":"key "+key+" already exists"}
+
 class get_state(Resource):
     def get(self):
         return state
@@ -20,23 +27,23 @@ class get_key(Resource):
         if key in state:
             return state[key]
         else:
-            return {"status":"error", "error":"key "+key+" not found"}
+            return error_key_not_found(key)
     def post(self, key):
         if key in state:
             return state[key]
         else:
-            return {"status":"error", "error":"key "+key+" not found"}
+            return error_key_not_found(key)
 
 class insert(Resource):
     def get(self,key,value):
         if key in state:
-            return {"status":"error", "error":"key "+key+" already exists"}
+            return error_key_already_exists(key)
         else:
             state[key] = value
             return {"status":"success"}
     def post(self,key,value):
         if key in state:
-            return {"status":"error", "error":"key "+key+" already exists"}
+            return error_key_already_exists(key)
         else:
             state[key] = value
             return {"status":"success"}
@@ -47,13 +54,13 @@ class delete(Resource):
             state.pop(key, None)
             return {"status":"success"}
         else:
-            return {"status":"error", "error":"key "+key+" not found"}
+            return error_key_not_found(key)
     def post(self, key):
         if key in state:
             state.pop(key, None)
             return {"status":"success"}
         else:
-            return {"status":"error", "error":"key "+key+" not found"}
+            return error_key_not_found(key)
 
 class update(Resource):
     def get(self, key, value):
@@ -61,13 +68,13 @@ class update(Resource):
             state[key] = value
             return {"status":"success"}
         else:
-            return {"status":"error", "error":"key "+key+" not found"}
+            return error_key_not_found(key)
     def post(self, key, value):
         if key in state:
             state[key] = value
             return {"status":"success"}
         else:
-            return {"status":"error", "error":"key "+key+" not found"}
+            return error_key_not_found(key)
 
 api.add_resource(get_state, "/api/get_state")
 api.add_resource(get_key, "/api/get_key/<string:key>")
