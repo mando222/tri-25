@@ -17,9 +17,15 @@ class get_state(Resource):
 
 class get_key(Resource):
     def get(self, key):
-        return state[key]
+        if key in state:
+            return state[key]
+        else:
+            return {"status":"error", "error":"key "+key+" not found"}
     def post(self, key):
-        return state[key]
+        if key in state:
+            return state[key]
+        else:
+            return {"status":"error", "error":"key "+key+" not found"}
 
 class insert(Resource):
     def get(self,key,value):
