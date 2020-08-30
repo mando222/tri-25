@@ -23,27 +23,45 @@ class get_key(Resource):
 
 class insert(Resource):
     def get(self,key,value):
-        state[key] = value
-        return {"status":"success"}
+        if key in state:
+            return {"status":"error", "error":"key "+key+" already exists"}
+        else:
+            state[key] = value
+            return {"status":"success"}
     def post(self,key,value):
-        state[key] = value
-        return {"status":"success"}
+        if key in state:
+            return {"status":"error", "error":"key "+key+" already exists"}
+        else:
+            state[key] = value
+            return {"status":"success"}
 
 class delete(Resource):
     def get(self,key):
-        state.pop(key, None)
-        return {"status":"success"}
+        if key in state:
+            state.pop(key, None)
+            return {"status":"success"}
+        else:
+            return {"status":"error", "error":"key "+key+" not found"}
     def post(self, key):
-        state.pop(key, None)
-        return {"status":"success"}
+        if key in state:
+            state.pop(key, None)
+            return {"status":"success"}
+        else:
+            return {"status":"error", "error":"key "+key+" not found"}
 
 class update(Resource):
     def get(self, key, value):
-        state[key] = value
-        return {"status":"success"}
+        if key in state:
+            state[key] = value
+            return {"status":"success"}
+        else:
+            return {"status":"error", "error":"key "+key+" not found"}
     def post(self, key, value):
-        state[key] = value
-        return {"status":"success"}
+        if key in state:
+            state[key] = value
+            return {"status":"success"}
+        else:
+            return {"status":"error", "error":"key "+key+" not found"}
 
 api.add_resource(get_state, "/api/get_state")
 api.add_resource(get_key, "/api/get_key/<string:key>")

@@ -22,6 +22,9 @@ print(response.json())
 response = requests.get(BASE + "api/get_state")
 print(response.json())
 
+response = requests.get(BASE + "api/delete/bad_key")
+print(response.json())
+
 response = requests.get(BASE + "api/delete/test")
 print(response.json())
 
